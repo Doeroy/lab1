@@ -105,5 +105,5 @@ void free_command_line(command_line* command)
 	for(int i = 0; i < command -> num_token; i ++){
 		free(command -> command_list[i]);
 	}
-	free(command);
+	free(command->command_list);
 }
