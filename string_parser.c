@@ -52,6 +52,30 @@ int count_token (char* buf, const char* delim)
 	return count;
 }
 
+void trim(char *str) {
+    char *start = str;
+    char *end;
+    
+    // Trim leading whitespace
+    while(isspace((unsigned char)*start)) start++;
+    
+    if(*start == 0) { // All spaces
+        *str = 0;
+        return;
+    }
+    
+    // Trim trailing whitespace
+    end = start + strlen(start) - 1;
+    while(end > start && isspace((unsigned char)*end)) end--;
+    
+    // Write null terminator
+    *(end + 1) = 0;
+    
+    // Move the trimmed string to the beginning if needed
+    if(start != str)
+        memmove(str, start, strlen(start) + 1);
+}
+
 command_line str_filler (char* buf, const char* delim)
 {
 	//TODO：
@@ -80,12 +104,13 @@ command_line str_filler (char* buf, const char* delim)
 	copy_buf[strlen(buf)] = '\0';
 	token = strtok_r(copy_buf, delim, &ptr);
 
-	for(int i = 0; i < cl.num_token; i ++) {
+	for(int i = 0; i < cl.num_token; i++) {
 		if(token == NULL){
 			break;
 		}
-		arr[i] = malloc(sizeof(char) * (strlen(token) + 1)); //added to strlen(token) for the null character
-		strcpy(arr[i], token); //have to use this because we can't do arr[i] = token in C
+		arr[i] = malloc(sizeof(char) * (strlen(token) + 1));
+		strcpy(arr[i], token);
+		trim(arr[i]); // Add this line to trim whitespace
 		token = strtok_r(NULL, delim, &ptr);
 	}
 	arr[cl.num_token] = NULL; //set the last index to NULL
