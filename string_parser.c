@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "string_parser.h"
-
+#include <ctype.h>
 #define _GUN_SOURCE
 
 int count_token (char* buf, const char* delim)
@@ -106,7 +106,7 @@ command_line str_filler (char* buf, const char* delim)
 
 	for(int i = 0; i < cl.num_token; i++) {
 		if(token == NULL){
-			break;
+		break;
 		}
 		arr[i] = malloc(sizeof(char) * (strlen(token) + 1));
 		strcpy(arr[i], token);
