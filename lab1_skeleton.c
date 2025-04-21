@@ -44,15 +44,16 @@ int main(int argc, char const *argv[])
 		for (int i = 0; large_token_buffer.command_list[i] != NULL; i++)
 		{
 			printf ("\tLine segment %d:\n", i + 1);
-
 			//tokenize large buffer
 			//smaller token is seperated by " "(space bar)
 			small_token_buffer = str_filler (large_token_buffer.command_list[i], " ");
-
 			//iterate through each smaller token to print
 			for (int j = 0; small_token_buffer.command_list[j] != NULL; j++)
 			{
 				printf ("\t\tToken %d: %s\n", j + 1, small_token_buffer.command_list[j]);
+				if(small_token_buffer.command_list[0] == "exit"){
+					return 0;
+				}
 			}
 
 			//free smaller tokens and reset variable
