@@ -48,48 +48,75 @@
 		 count ++;
 		 token = strtok_r(NULL, delim, &ptr);
 	 }
-     free(copy_buf);
-	 return count;
+    free(copy_buf); 
+	return count;
  }
  
- command_line str_filler(char* buf, const char* delim)
+ void trim(char *str) {
+    if (str == NULL) return;
+    
+    char *start = str;
+    char *end;
+    
+    // Trim leading whitespace
+    while(isspace((unsigned char)*start)) start++;
+    
+    if(*start == 0) { // All spaces
+        *str = 0;
+        return;
+    }
+    
+    // Trim trailing whitespace
+    end = start + strlen(start) - 1;
+    while(end > start && isspace((unsigned char)*end)) end--;
+    
+    // Write null terminator
+    *(end + 1) = 0;
+    
+    // Move the trimmed string to the beginning if needed
+    if(start != str)
+        memmove(str, start, strlen(start) + 1);
+}
+ 
+command_line str_filler(char* buf, const char* delim)
 {
     command_line cl;
     cl.num_token = count_token(buf, delim);
     char **arr = (char**)malloc((cl.num_token + 1) * sizeof(char*));
-    
+
     char *token; 
     char *ptr;
-    
+
     char *copy_buf = (char*)malloc(sizeof(char) * strlen(buf) + 1);
     strcpy(copy_buf, buf);
-    
+
     copy_buf[strlen(buf)] = '\0';
     token = strtok_r(copy_buf, delim, &ptr);
-    
+
     for(int i = 0; i < cl.num_token; i++) {
-        if(token == NULL) {
-            break;
-        }
-        arr[i] = malloc(sizeof(char) * (strlen(token) + 1));
-        strcpy(arr[i], token);
-        token = strtok_r(NULL, delim, &ptr);
+    if(token == NULL) {
+        break;
+    }
+    arr[i] = malloc(sizeof(char) * (strlen(token) + 1));
+    strcpy(arr[i], token);
+    trim(arr[i]); // Trim whitespace including newlines
+    token = strtok_r(NULL, delim, &ptr);
     }
     arr[cl.num_token] = NULL;
     cl.command_list = arr;
-    
+
     free(copy_buf);
     return cl;
 }
- 
- void free_command_line(command_line* command)
- {
-	 //TODO：
-	 /*
-	 *	#1.	free the array base num_token
-	 */
-	 for(int i = 0; i < command -> num_token; i ++){
-		 free(command -> command_list[i]);
-	 }
-	 free(command->command_list);
- }
+
+void free_command_line(command_line* command)
+{
+    //TODO：
+    /*
+    *	#1.	free the array base num_token
+    */
+    for(int i = 0; i < command -> num_token; i ++){
+        free(command -> command_list[i]);
+    }
+    free(command->command_list);
+}
