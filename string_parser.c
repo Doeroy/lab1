@@ -5,7 +5,6 @@
  *      Author: gguan, Monil
  *
  */
-
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
@@ -99,7 +98,14 @@ command_line str_filler(char* buf, const char* delim)
     }
     arr[i] = malloc(sizeof(char) * (strlen(token) + 1));
     strcpy(arr[i], token);
-    trim(arr[i]); // Trim whitespace including newlines
+    int j = 0;
+        while (arr[i][j] != '\0') {
+            if (arr[i][j] == '\n') {
+                arr[i][j] = '\0';
+                break;
+            }
+            j++;
+        }
     token = strtok_r(NULL, delim, &ptr);
     }
     arr[cl.num_token] = NULL;
