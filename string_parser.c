@@ -48,7 +48,7 @@
 		 count ++;
 		 token = strtok_r(NULL, delim, &ptr);
 	 }
-     malloc(copy_buf);
+     free(copy_buf);
 	 return count;
  }
  
