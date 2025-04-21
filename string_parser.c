@@ -48,35 +48,9 @@
 		 count ++;
 		 token = strtok_r(NULL, delim, &ptr);
 	 }
- 
+     malloc(copy_buf);
 	 return count;
  }
- 
- void trim(char *str) {
-    if (str == NULL) return;
-    
-    char *start = str;
-    char *end;
-    
-    // Trim leading whitespace
-    while(isspace((unsigned char)*start)) start++;
-    
-    if(*start == 0) { // All spaces
-        *str = 0;
-        return;
-    }
-    
-    // Trim trailing whitespace
-    end = start + strlen(start) - 1;
-    while(end > start && isspace((unsigned char)*end)) end--;
-    
-    // Write null terminator
-    *(end + 1) = 0;
-    
-    // Move the trimmed string to the beginning if needed
-    if(start != str)
-        memmove(str, start, strlen(start) + 1);
-}
  
  command_line str_filler(char* buf, const char* delim)
 {
@@ -99,7 +73,6 @@
         }
         arr[i] = malloc(sizeof(char) * (strlen(token) + 1));
         strcpy(arr[i], token);
-        trim(arr[i]); // Trim whitespace including newlines
         token = strtok_r(NULL, delim, &ptr);
     }
     arr[cl.num_token] = NULL;
